@@ -14,7 +14,9 @@ import java.util.Date;
 public class Commit {
 private static Commit first = null;
 private static Commit parent = null;
-private static String summary, author, date;
+private static String summary;
+private static String author;
+private static String date;
 private static String sha1 = "";
 private String pTree = null;
 
@@ -26,12 +28,13 @@ public Commit (String sum, String aut,  String fileName, Commit c) throws NoSuch
 		parent.writeFile();
 	}
 	
-	summary = sum;
-	author = aut;
+
 	Date d=  new Date ();
 	date= d.toString();
 	pTree =  "objects/" + fileName;
 	parent = c;
+	summary = sum;
+	author = aut;
 }
 	
 		public void writeP() throws NoSuchAlgorithmException, IOException {
@@ -47,15 +50,15 @@ public Commit (String sum, String aut,  String fileName, Commit c) throws NoSuch
 		}
 		
 	public void writeFile() throws IOException, NoSuchAlgorithmException {
-		String str = "";
+		String st = "";
 		ArrayList<String> arr = Con();
-		for (String s : arr) {
-			if (!s.equals(null)) {
-				str += s;
+		for (String str : arr) {
+			if (!str.equals(null)) {
+				st += str;
 			}
 		}
 		
-		String SHA = encrypt(str);
+		String SHA = encrypt(st);
 		File file = new File(SHA);
 
 		FileWriter files = new FileWriter("objects/" + file);
