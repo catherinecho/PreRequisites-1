@@ -1,9 +1,14 @@
 package git;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Commit {
@@ -14,20 +19,85 @@ private static String sha1 = "";
 private String pTree = null;
 
 
-public Commit (String sum, String aut, String dat, String fileName, Commit c) {
+public Commit (String sum, String aut,  String fileName, Commit c) throws NoSuchAlgorithmException, IOException {
+	if (!c.equals(null)) {
+		parent = c;
+		parent.setFirst (this);
+		parent.writeFile();
+	}
+	
 	summary = sum;
 	author = aut;
-	date= dat;
+	Date d=  new Date ();
+	date= d.toString();
 	pTree =  "objects/" + fileName;
 	parent = c;
 }
-	public String getDate() {
-		Date d=  new Date ();
-		return d.toString();
+	
+		public void writeP() throws NoSuchAlgorithmException, IOException {
+			parent.setFirst(this);
+			parent.writeFile();
+		}
+		
+		public void setFirst (Commit c) {
+			first = c;
+		}
+		public void setParent (Commit c) {
+				parent = c;
+		}
+		
+	public void writeFile() throws IOException, NoSuchAlgorithmException {
+		String str = "";
+		ArrayList<String> arr = Con();
+		for (String s : arr) {
+			if (!s.equals(null)) {
+				str += s;
+			}
+		}
+		
+		String SHA = encrypt(str);
+		File file = new File(SHA);
+
+		FileWriter files = new FileWriter("objects/" + file);
+		BufferedWriter buffer = new BufferedWriter(files);
+		for (String s : arr) {
+			if (!s.equals(null)) {
+				buffer.write(s);
+			}
+			buffer.newLine();
+		}
+		buffer.close();
+		files.close();
 	}
+	private ArrayList<String> Con() {
+		
+		ArrayList<String> Strs = new ArrayList<String>();
+		
+		Strs.add(pTree);
+		
+		if (parent != null) {
+			Strs.add(parent.getPTree());
+		} else {
+			Strs.add(null);
+		}
+		if (first != null) {
+			Strs.add(parent.getPTree());
+		} else {
+			Strs.add(null);
+		}
+		Strs.add(author);
+		Strs.add(date);
+		Strs.add(summary);
+		return Strs;
+	}
+	
+	
+	public String getPTree() {
+		return pTree;
+	} 
+	
 
-
-public static void encryptThisString(String input) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+public static String encrypt(String input) throws NoSuchAlgorithmException, UnsupportedEncodingException {
 
     
     // getInstance() method is called with algorithm SHA-1
@@ -35,11 +105,8 @@ public static void encryptThisString(String input) throws NoSuchAlgorithmExcepti
     md.reset();
     md.update(input.getBytes("UTF-8"));
     sha1 = new BigInteger (1, md.digest()).toString(16);
+    return sha1;
 }
-	
-	public String getDate() {
-		return date;
-	}
 	
 	
 }
