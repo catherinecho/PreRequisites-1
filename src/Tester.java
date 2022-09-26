@@ -8,20 +8,21 @@ import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 
 public class Tester {
-public static void main (String []args) throws IOException, NoSuchAlgorithmException  {
-//	String a = "Object";
-//	Blob blobby;
-//	try {
-//		blobby = new Blob (a);
-//	} catch (IOException e) {
-//		// TODO Auto-generated catch block
-//		e.printStackTrace();
-//	}
-//	System.out.println( Blob.encryptThisString(a));
-	Blob blobby = new Blob ("s");
-}
-}
+	/*
+	public static void main (String []args) throws IOException, NoSuchAlgorithmException  {
+	//	String a = "Object";
+	//	Blob blobby;
+	//	try {
+	//		blobby = new Blob (a);
+	//	} catch (IOException e) {
+	//		// TODO Auto-generated catch block
+	//		e.printStackTrace();
+	//	}
+	//	System.out.println( Blob.encryptThisString(a));
+		Blob blobby = new Blob ("s");
+	}
 
+	*/
 	public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
 		Blob b = new Blob ("/Users/meeraburghardt/eclipse-workspace/Git PreRequisites/Object.txt");
 	System.out.println(b.encryptThisString("abcdefg"));

@@ -2,6 +2,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -59,10 +60,10 @@ class JackBTester {
 	}
 
 	@Test
-	void testIndex() {
+	void testIndex() throws IOException {
 				
 		Index ind= new Index();
-				
+		ind.init();
 		File file=new File("index");
 		assertTrue(file.exists());
 				
@@ -74,14 +75,14 @@ class JackBTester {
 	void testBlob() throws IOException, NoSuchAlgorithmException {		
 		Blob b=new Blob("junit.txt");
 		
-		File file=new File("objects/f85d527604444aa350aa09dfe93baefbd88f804c");// PUT IN SHA1 STRING
+		File file=new File("objects/94e66df8cd09d410c62d9e0dc59d3a884e458e05");// PUT IN SHA1 STRING
 		assertTrue(file.exists());// this is returning false bc file never gets created
 	}
 	
 	@Test
 	void testGetSha() throws NoSuchAlgorithmException, IOException {
 		Blob b=new Blob("junit.txt");
-		assertTrue(b.getSha().equals("f85d527604444aa350aa09dfe93baefbd88f804c"));
+		assertTrue(b.getSha().equals("94e66df8cd09d410c62d9e0dc59d3a884e458e05"));
 		
 	}
 	
@@ -128,14 +129,14 @@ class JackBTester {
 	@Test
 	//THIS ISN'T CORRECT
 	void testDeleteBlob() throws NoSuchAlgorithmException, IOException {
-		//deletes junit
-		ind.deleteBlob("junit.txt");
+		
 		
 		//check if file doesn't exist
 		File f=new File("objects/f85d527604444aa350aa09dfe93baefbd88f804c");
 		Index ind=new Index();		
 		assertTrue(!f.exists());
-		
+		//deletes junit
+		ind.deleteBlob("junit.txt");
 		//check if removes line from index
 		try (BufferedReader br = new BufferedReader(new FileReader("index"))) {
 		    String line;

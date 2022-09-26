@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -30,26 +31,36 @@ public class Blob {
 		// create new file by telling it where to look "path class" Write to that Path
 		this.s = s;
 		String string = s;
+		File f = new File(s);
+
 		String bReader = "";
-		BufferedReader br = new BufferedReader(new FileReader(s));
+		BufferedReader br = new BufferedReader(new FileReader(f));
+		
 		while (br.ready()) {
 			bReader = bReader + (char)br.read();
 		}
 		st = bReader;
 		String SHA1 = encryptThisString(bReader);
 		SHA = SHA1;
+		PrintWriter out = new PrintWriter (new FileWriter("./objects/"+ SHA));
+		out.write(st);
+		out.close();
+		br.close();
+		
+		
 		
 	}
-	
+	/*
 	private void makeNEWFile(String s) throws IOException {
 		Path newFilePath = Paths.get(s);
 	    Files.createFile(newFilePath);
 	}
-	
+	*/
 	
 	public String getSha () {
 		return SHA;
 	}
+	
 	public static String encryptThisString(String input) throws NoSuchAlgorithmException, UnsupportedEncodingException {
 
         
@@ -59,6 +70,7 @@ public class Blob {
             md.update(input.getBytes("UTF-8"));
             return new BigInteger (1, md.digest()).toString(16);
     }
+	/*
 	public void newFile() throws IOException{
 		Path pathy = Paths.get("Objects/" + SHA + ".txt");
 		try {
@@ -69,6 +81,6 @@ public class Blob {
 		}
 		
 	}
-	
+	*/
 	
 }

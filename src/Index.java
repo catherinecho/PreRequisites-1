@@ -26,14 +26,18 @@ public class Index {
 		hashy= new HashMap <String, String>();
 	}
 	
-	public void init() throws FileNotFoundException  {
-		File f = new File ("Index.txt");
+	public void init() throws IOException  {
+		File d = new File("objects");
+		d.mkdir();
+		Path p = Paths.get("objects");
+		File f = new File (p+"/Index.txt");
 		fi =f;
-		PrintWriter pw = new PrintWriter("test/" + f); 
-		pw.append(""); 
-		pw.close(); 
-		File d = new File("test/objects"); 
-		d.mkdir(); 
+		f.createNewFile();
+		//File d = new File("test/objects"); 
+		//d.mkdir(); 
+		
+	
+		
 		
 	}
 	
