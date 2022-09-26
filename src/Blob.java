@@ -46,9 +46,6 @@ public class Blob {
 		out.write(st);
 		out.close();
 		br.close();
-		
-		
-		
 	}
 	/*
 	private void makeNEWFile(String s) throws IOException {
