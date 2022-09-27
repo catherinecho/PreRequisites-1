@@ -64,7 +64,7 @@ class JackBTester {
 				
 		Index ind= new Index();
 		ind.init();
-		File file=new File("index");
+		File file=new File("objects/index.txt");
 		assertTrue(file.exists());
 				
 		Path path=Paths.get("objects");

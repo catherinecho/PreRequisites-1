@@ -17,20 +17,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Index {
- private HashMap hashy;
+ private HashMap<String, String> hashy= new HashMap <String, String>();
  private File fi;
  private File ob;
  
-	public Index() {
-		
-		hashy= new HashMap <String, String>();
-	}
+
 	
 	public void init() throws IOException  {
 		File d = new File("objects");
 		d.mkdir();
 		Path p = Paths.get("objects");
-		File f = new File (p+"/Index.txt");
+		File f = new File (p+"/index.txt");
 		fi =f;
 		f.createNewFile();
 		//File d = new File("test/objects"); 
@@ -47,18 +44,21 @@ public class Index {
 		hashy.put(s,blobby.encryptThisString(s));
 //		 File file = new File(outputFilePath);
 		  
-	        BufferedWriter bf = null;
+	    //BufferedWriter bf = null;
 	  
 	  
 	            // create new BufferedWriter for the output file
-	            bf = new BufferedWriter(new FileWriter(fi));
-	  
+	    //bf = new BufferedWriter(new FileWriter(fi));
+	    PrintWriter bf = new PrintWriter(new FileWriter("objects/index.txt"));
 	            // iterate map entry
 	  
 	                // put key and value separated by a colon
-	                bf.write(s + ":"+ blobby.encryptThisString(s));
-	  
-	                bf.close();
+        //bf.write(s + ":"+ blobby.encryptThisString(s));
+        //PrintWriter out = new PrintWriter("objects/index");
+ 		for (String file: hashy.keySet()) 
+ 			bf.println(file + " : " + hashy.get(file));
+ 	 	
+ 		bf.close();
 	}
 	
 	
@@ -83,5 +83,5 @@ public class Index {
 		reader.close(); 
 		boolean successful = tempFile.renameTo(fi);
 	
-}
+	}
 }
