@@ -89,7 +89,8 @@ class JackBTester {
 	@Test
 	void testAddBlob() throws IOException, NoSuchAlgorithmException{
 		Index ind=new Index();
-		//add 3 blobs
+		ind.init();
+		//add 2 blobs
 		ind.addBlob("junit.txt");
 		ind.addBlob("junit1.txt");
 		ind.addBlob("junit2.txt");
@@ -104,7 +105,7 @@ class JackBTester {
 		boolean jBoo=false;
 		boolean j1Boo=false;
 		boolean j2Boo=false;
-		try (BufferedReader br = new BufferedReader(new FileReader("index"))) {
+		try (BufferedReader br = new BufferedReader(new FileReader("Index.txt"))) {
 		    String line;	 
 		    
 		    while ((line = br.readLine()) != null) {

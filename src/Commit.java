@@ -16,91 +16,118 @@ import java.util.Date;
 public class Commit {
 	private static Commit first = null;
 	private static Commit parent = null;
+	private static Commit child  = null;
 	private static String summary;
 	private static String author;
 	private static String date;
-	private static String sha1 = "";
+	private static String sha1;
 	private String pTree = null;
 	
 	
-	public Commit (String sum, String aut,  String fileName, Commit c) throws NoSuchAlgorithmException, IOException {
+	public Commit (String sum, String aut,  String fileName, Commit p) throws NoSuchAlgorithmException, IOException {
 		
 	
 		Date d=  new Date ();
 		date= d.toString();
-		pTree =  fileName;
-		parent = c;
+		pTree =  "objects/" + fileName;
+		parent = p;
 		summary = sum;
 		author = aut;
+		/*
 		if (c !=null) {
 			parent = c;
 			parent.setFirst (this);
 			parent.writeFile();
 		}
+		*/
+		String st = "";
+		ArrayList<String> arr = con();
+		for (String str : arr) {
+			if (!str.equals(null)) {
+				st += str;
+			}
+		}
+		sha1 = encrypt(st);
 		
 	}
-		
-			public void writeP() throws NoSuchAlgorithmException, IOException {
-				parent.setFirst(this);
-				parent.writeFile();
-			}
-			
-			public void setFirst (Commit c) {
-				first = c;
-			}
-			public void setParent (Commit c) {
-					parent = c;
-			}
-			
-		public void writeFile() throws IOException, NoSuchAlgorithmException {
-			String st = "";
-			ArrayList<String> arr = Con();
-			for (String str : arr) {
-				if (!str.equals(null)) {
-					st += str;
-				}
-			}
-			
-			String SHA = encrypt(st);
-			File file = new File(SHA);
+	public String getpTree() {
+		return pTree; 
+	}
+	/*
+	private ArrayList<String> contents() {
+		ArrayList<String> a = new ArrayList<String>();
+		a.add(pTree);
+		if (parent == null) 
+			a.add(null);
+		else 
+			a.add(parent.getpTree());
 	
-			FileWriter files = new FileWriter("objects/" + file);
-			BufferedWriter buffer = new BufferedWriter(files);
-			for (String s : arr) {
-				if (!s.equals(null)) {
-					buffer.write(s);
-				}
-				buffer.newLine();
-			}
-			buffer.close();
-			files.close();
+		if (child == null) {
+			a.add(null);	
+		} else {
+			a.add(parent.getLocation());
 		}
-		private ArrayList<String> Con() {
+		a.add(author);
+		a.add(date);
+		a.add(summary);
+		return a;
+	}
+	*/
+	public void writeP() throws NoSuchAlgorithmException, IOException {
+		parent.setFirst(this);
+		parent.writeFile();
+	}
+	
+	public void setFirst (Commit c) {
+		first = c;
+	}
+	public void setParent (Commit c) {
+			parent = c;
+	}
 			
-			ArrayList<String> Strs = new ArrayList<String>();
-			
-			Strs.add(pTree);
-			
-			if (parent != null) {
-				Strs.add(parent.getPTree());
-			} else {
-				Strs.add(null);
+	public void writeFile() throws IOException, NoSuchAlgorithmException {
+		ArrayList<String> a = con();
+		
+		//String SHA = encrypt(st);
+		File file = new File(sha1);
+
+		FileWriter files = new FileWriter("objects/" + file);
+		BufferedWriter buffer = new BufferedWriter(files);
+		for (String s : a) {
+			if (!s.equals(null)) {
+				buffer.write(s);
 			}
-			if (first != null) {
-				Strs.add(parent.getPTree());
-			} else {
-				Strs.add(null);
-			}
-			Strs.add(author);
-			Strs.add(date);
-			Strs.add(summary);
-			return Strs;
+			buffer.newLine();
 		}
+		buffer.close();
+		files.close();
+	}
+	private ArrayList<String> con() {
+		
+		ArrayList<String> Strs = new ArrayList<String>();
+		
+		Strs.add(pTree);
+		
+		if (parent != null) {
+			Strs.add(parent.getPTree());
+		} else {
+			Strs.add(null);
+		}
+		if (first != null) {
+			Strs.add(parent.getPTree());
+		} else {
+			Strs.add(null);
+		}
+		Strs.add(author);
+		Strs.add(date);
+		Strs.add(summary);
+		return Strs;
+	}
 		
 		
-		public String getPTree() {
-			return pTree;
-		} 
+	public String getPTree() {
+		return pTree;
+	} 
 		
 	
 	public static String encrypt(String input) throws NoSuchAlgorithmException, UnsupportedEncodingException {
