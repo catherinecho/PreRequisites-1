@@ -21,7 +21,7 @@ class CommitTester {
 	@Test
 	void test() throws NoSuchAlgorithmException, FileNotFoundException, IOException {
 		Commit c = new Commit("sum1","auth1","tree.txt", null);	
-		Commit child = new Commit("tree1.txt","sum2","auth2",null);
+//		Commit child = new Commit("tree1.txt","sum2","auth2",null);
 	}
 
 }

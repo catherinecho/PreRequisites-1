@@ -4,6 +4,8 @@
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -12,6 +14,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Scanner;
 
 public class Commit {
 	private static Commit first = null;
@@ -20,7 +23,7 @@ public class Commit {
 	private static String summary;
 	private static String author;
 	private static String date;
-	private static String sha1;
+	private static String sha1 = "";
 	private String pTree = null;
 	
 	
@@ -43,13 +46,36 @@ public class Commit {
 		String st = "";
 		ArrayList<String> arr = con();
 		for (String str : arr) {
-			if (!str.equals(null)) {
+			System.out.println(arr);
+			if (str==null) {
 				st += str;
 			}
 		}
-		sha1 = encrypt(st);
+		sha1 = getContents("objects/" + fileName);
+		//sha1 = encrypt(st);
 		
 	}
+	
+	public static String getContents(String filename) throws FileNotFoundException, NoSuchAlgorithmException, UnsupportedEncodingException {
+		Scanner in = new Scanner(new FileReader(filename));
+		String s= "";
+		while(in.hasNextLine()) {
+			s+= in.nextLine();
+		}
+		return s;
+		
+	}
+	public static String encrypt(String input) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+	
+	    
+	    // getInstance() method is called with algorithm SHA-1
+	    MessageDigest md = MessageDigest.getInstance("SHA-1");
+	    md.reset();
+	    md.update(input.getBytes("UTF-8"));
+	    sha1 = new BigInteger (1, md.digest()).toString(16);
+	    return sha1;
+	}
+	
 	public String getpTree() {
 		return pTree; 
 	}
@@ -108,6 +134,9 @@ public class Commit {
 		
 		Strs.add(pTree);
 		
+		//read file 
+		
+		
 		if (parent != null) {
 			Strs.add(parent.getPTree());
 		} else {
@@ -130,16 +159,6 @@ public class Commit {
 	} 
 		
 	
-	public static String encrypt(String input) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-	
-	    
-	    // getInstance() method is called with algorithm SHA-1
-	    MessageDigest md = MessageDigest.getInstance("SHA-1");
-	    md.reset();
-	    md.update(input.getBytes("UTF-8"));
-	    sha1 = new BigInteger (1, md.digest()).toString(16);
-	    return sha1;
-	}
 		
 	
 }
