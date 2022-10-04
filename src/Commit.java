@@ -52,6 +52,7 @@ public class Commit {
 			}
 		}
 		*/
+		TreeObject tree = new TreeObject(getBlobs());
 		fsha1 = encrypt(summary+"\n" + date + "\n" + author + "\n" + psha1);
 	
 		//sha1 = encrypt(st);
