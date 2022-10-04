@@ -58,24 +58,14 @@ public class Commit {
 			out.append(updated);
 			out.close();
 			in.close();
-		}else
-			psha1 = null;
-		TreeObject tree = new TreeObject(getBlobs());
-		
-		clearOutIndex(); 
-		/*
-		String st = "";
-		ArrayList<String> arr = con();
-		for (String str : arr) {
-			System.out.println(arr);
-			if (str==null) {
-				st += str;
-			}
 		}
-		*/
-		//fsha1 = encrypt(st);
-		
+		TreeObject tree = new TreeObject(getBlobs());
+		pTree= tree.getSha1();
 		writeFile(); 
+		clearOutIndex(); 
+		
+		
+		
 		
 		
 	}
@@ -139,15 +129,20 @@ public class Commit {
 		//ArrayList<String> a = con();
 		
 		//String SHA = encrypt(st);
-		//File file = new File(sha1);
+		File file = new File("objects/" + fsha1);
 
-		FileWriter files = new FileWriter("objects/" + fsha1);
+		FileWriter files = new FileWriter(file);
 		BufferedWriter buffer = new BufferedWriter(files);
-		buffer.write(pTree);
+		buffer.write("objects/" + pTree);
 		buffer.newLine();
-		buffer.write(psha1);
-		buffer.newLine();
-		buffer.write(csha1);
+		if(parent != null) {
+			buffer.write(parent);
+			buffer.newLine();
+		}else {
+			buffer.newLine();
+		}
+		
+		//buffer.write(csha1);
 		buffer.newLine();
 		buffer.write(author);
 		buffer.newLine();
