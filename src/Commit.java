@@ -24,10 +24,9 @@ public class Commit {
 	static String summary;
 	static String author;
 	static String date;
-	static String psha1 = "";
-	static String csha1 = "";
 	static String fsha1 = "";
-	String pTree = null;
+	static String pTree = null;
+	static String parT = ""; 
 	
 	
 	public Commit (String sum, String aut, String p) throws NoSuchAlgorithmException, IOException {
@@ -52,7 +51,8 @@ public class Commit {
 			updated += "objects/" + fsha1 + "\n"; 
 			out.append(updated);
 			updated = ""; 
-			updated += in.readLine() + "\n"; 
+			parT = in.readLine(); 
+			updated += parT + "\n"; 
 			updated += in.readLine() + "\n"; 
 			updated += in.readLine() + "\n";
 			out.append(updated);
@@ -89,13 +89,29 @@ public class Commit {
 			l = in.readLine();
 			if(l ==null)
 				break;
-			if(l.contains("*deleted*")) {
-				
+			if (l.contains("*deleted*")) {
+				de.add(l.substring(10));
+				check = true;
+				continue;
 			}
+			else if (l.contains("*edited*")) {
+				de.add(l.substring(9));
+				check = true;
+				continue;
+			} 
 			blobsNames.add(l);
-		}
+		}	
 		//blobsNames.add("tree :" + parent.getPTree());
 		in.close();
+		if (!check && parent != null) {
+			BufferedReader in2 = new BufferedReader(new FileReader(new File ("objects/" + parent))); 
+			String tmp = in.readLine();
+			blobsNames.add("tree : " + tmp.substring(8));
+			in2.close();
+		}
+		else if(check) {
+			deleteEdit(de);
+		}
 		
 		return blobsNames;
 	}
@@ -103,7 +119,11 @@ public class Commit {
 		return fsha1; 
 	}
 	
-	
+	public void deleteEdit(ArrayList<String> de) {
+		File f = new File(parT);
+		
+		
+	}
 	public static String encrypt(String input) throws NoSuchAlgorithmException, UnsupportedEncodingException {
 
         
