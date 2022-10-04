@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -43,7 +44,10 @@ public class Commit {
 			psha1 = "objects/" + encrypt(parent.getFSha1());
 		}else
 			psha1 = null;
-		/*
+		
+		TreeObject tree = new TreeObject(getBlobs());
+		fsha1 = encrypt(summary+"\n" + date + "\n" + author + "\n" + psha1);
+		clearOutIndex(); 
 		String st = "";
 		ArrayList<String> arr = con();
 		for (String str : arr) {
@@ -52,12 +56,14 @@ public class Commit {
 				st += str;
 			}
 		}
-		*/
-		TreeObject tree = new TreeObject(getBlobs());
-		fsha1 = encrypt(summary+"\n" + date + "\n" + author + "\n" + psha1);
-	
+		
 		//sha1 = encrypt(st);
 		
+	}
+	public static void clearOutIndex() throws FileNotFoundException {
+		PrintWriter out = new PrintWriter("objects/indext.txt");
+		out.print("");
+		out.close(); 
 	}
 	public static ArrayList<String> getBlobs() throws FileNotFoundException, IOException{
 		String l = ""; 
