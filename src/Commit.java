@@ -48,6 +48,7 @@ public class Commit {
 		TreeObject tree = new TreeObject(getBlobs());
 		fsha1 = encrypt(summary+"\n" + date + "\n" + author + "\n" + psha1);
 		clearOutIndex(); 
+		/*
 		String st = "";
 		ArrayList<String> arr = con();
 		for (String str : arr) {
@@ -56,8 +57,8 @@ public class Commit {
 				st += str;
 			}
 		}
-		
-		//sha1 = encrypt(st);
+		*/
+		//fsha1 = encrypt(st);
 		
 	}
 	public static void clearOutIndex() throws FileNotFoundException {
@@ -95,14 +96,13 @@ public class Commit {
 		
 	}
 	public static String encrypt(String input) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-	
-	    
-	    // getInstance() method is called with algorithm SHA-1
-	    MessageDigest md = MessageDigest.getInstance("SHA-1");
-	    md.reset();
-	    md.update(input.getBytes("UTF-8"));
-	    sha1 = new BigInteger (1, md.digest()).toString(16);
-	    return sha1;
+
+        
+        // getInstance() method is called with algorithm SHA-1
+        MessageDigest md = MessageDigest.getInstance("SHA-1");
+        md.reset();
+        md.update(input.getBytes("UTF-8"));
+        return new BigInteger (1, md.digest()).toString(16);
 	}
 	
 	public String getpTree() {
