@@ -17,32 +17,32 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class Commit {
-	private static Commit first = null;
-	private static Commit parent = null;
-	private static Commit child  = null;
-	private static String summary;
-	private static String author;
-	private static String date;
-	private static String sha1 = "";
-	private String pTree = null;
+	static Commit first = null;
+	static Commit parent = null;
+	static Commit child  = null;
+	static String summary;
+	static String author;
+	static String date;
+	static String psha1 = "";
+	static String csha1 = "";
+	static String fsha1 = "";
+	String pTree = null;
 	
 	
-	public Commit (String sum, String aut,  String fileName, Commit p) throws NoSuchAlgorithmException, IOException {
+	public Commit (String sum, String aut, Commit p) throws NoSuchAlgorithmException, IOException {
 		
-	
 		Date d=  new Date ();
 		date= d.toString();
-		pTree =  "objects/" + fileName;
 		parent = p;
+		child = null;
 		summary = sum;
 		author = aut;
+		
+		if (parent !=null) {
+			psha1 = "objects/" + encrypt(parent.getFSha1());
+		}else
+			psha1 = null;
 		/*
-		if (c !=null) {
-			parent = c;
-			parent.setFirst (this);
-			parent.writeFile();
-		}
-		*/
 		String st = "";
 		ArrayList<String> arr = con();
 		for (String str : arr) {
@@ -51,9 +51,14 @@ public class Commit {
 				st += str;
 			}
 		}
-		sha1 = getContents("objects/" + fileName);
+		*/
+		fsha1 = encrypt(summary+"\n" + date + "\n" + author + "\n" + psha1);
+	
 		//sha1 = encrypt(st);
 		
+	}
+	public static String getFSha1() {
+		return fsha1; 
 	}
 	
 	public static String getContents(String filename) throws FileNotFoundException, NoSuchAlgorithmException, UnsupportedEncodingException {

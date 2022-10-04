@@ -1,5 +1,6 @@
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -20,6 +21,9 @@ class CommitTester {
 
 	@Test
 	void test() throws NoSuchAlgorithmException, FileNotFoundException, IOException {
+		File f = new File("objects/tree.txt"); 
+		// make tree.txt and put some content in it
+		//assertTrue(f.exists());
 		Commit c = new Commit("sum1","auth1","tree.txt", null);	
 //		Commit child = new Commit("tree1.txt","sum2","auth2",null);
 	}
