@@ -70,7 +70,9 @@ public class Commit {
 				break;
 			blobsNames.add(l);
 		}
+		blobsNames.add("tree :" + parent.getPTree());
 		in.close();
+		
 		return blobsNames;
 	}
 	public static String getFSha1() {
