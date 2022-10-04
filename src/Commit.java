@@ -19,8 +19,8 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class Commit {
-	static String parent = null;
-	static String child  = null;
+	static String parent ;
+	static String child;
 	static String summary;
 	static String author;
 	static String date;
@@ -38,6 +38,7 @@ public class Commit {
 		summary = sum;
 		author = aut;
 		fsha1 = encrypt(summary + date  + author  + parent);
+		
 		
 		if (p !=null) {
 			pfile = new File("objects/" + p);
@@ -73,45 +74,62 @@ public class Commit {
 	}
 	
 	public static void clearOutIndex() throws FileNotFoundException {
-		PrintWriter out = new PrintWriter("objects/indext.txt");
+		PrintWriter out = new PrintWriter("objects/index.txt");
 		out.print("");
 		out.close(); 
 	}
 	public static ArrayList<String> getBlobs() throws FileNotFoundException, IOException{
+		ArrayList<String> blobsNames = new ArrayList<String>(); 
+		//ArrayList<String> list = new ArrayList<String>();
+		File f = new File("objects/" + parent);
+		if (parent != null) {
+			Scanner input = new Scanner(f);
+			String line = input.nextLine();
+			blobsNames.add("tree : " + line);
+			input.close();
+		}
 		String l = ""; 
 		boolean check = false;
-		ArrayList<String> blobsNames = new ArrayList<String>(); 
+		
 		ArrayList<String> de = new ArrayList<String>(); 
-		BufferedReader in = new BufferedReader(new FileReader("index.txt"));
+		BufferedReader in = new BufferedReader(new FileReader("objects/index.txt"));
 		
 		while(l !=null && in.ready()){
 			
 			l = in.readLine();
 			if(l ==null)
 				break;
-			if (l.contains("*deleted*")) {
-				de.add(l.substring(10));
-				check = true;
-				continue;
-			}
-			else if (l.contains("*edited*")) {
-				de.add(l.substring(9));
-				check = true;
-				continue;
-			} 
-			blobsNames.add(l);
+			String n = "blob : " + l.substring(l.indexOf(':') + 2) + " " + l.substring(0,l.indexOf(':'));
+			blobsNames.add(n);
 		}	
+		
 		//blobsNames.add("tree :" + parent.getPTree());
 		in.close();
+		/*
 		if (!check && parent != null) {
-			BufferedReader in2 = new BufferedReader(new FileReader(new File ("objects/" + parent))); 
+			File f=  new File ("objects/" + parent);
+			BufferedReader in2 = new BufferedReader(new FileReader(f)); 
 			String tmp = in.readLine();
 			blobsNames.add("tree : " + tmp.substring(8));
 			in2.close();
 		}
 		else if(check) {
-			deleteEdit(de);
+			File f = new File(parT);
+			BufferedReader in2 = new BufferedReader(new FileReader(f));
+			String prev = "";
+			while (true) {
+				String next = in.readLine();
+				if(next == null)
+					break;
+				if (next.contains("tree :")) prev = next;
+				else if (de.size()==0) blobsNames.add(next);
+				
+			}
+			
+			
+			
 		}
+		*/
 		
 		return blobsNames;
 	}
@@ -120,7 +138,8 @@ public class Commit {
 	}
 	
 	public void deleteEdit(ArrayList<String> de) {
-		File f = new File(parT);
+		
+		
 		
 		
 	}
@@ -141,7 +160,22 @@ public class Commit {
 	}
 	*/
 	
+	public void writeFile() throws NoSuchAlgorithmException, IOException {
+		File f = new File(fsha1);
+		PrintWriter p = new PrintWriter("objects/"+ f);
+		p.append("objects/" + pTree + "\n");
+		if (parent == null) p.append("null" + "\n");		
+		else p.append("objects/" + parent + "\n");
 			
+		if (child == null) p.append("null" + "\n");
+		else p.append("objects/" + child + "\n");
+			
+		p.append(author + "\n");
+		p.append(date + "\n");
+		p.append(summary + "\n");
+		p.close();
+	}
+	/*
 	public void writeFile() throws IOException, NoSuchAlgorithmException {
 		//ArrayList<String> a = con();
 		
@@ -158,9 +192,15 @@ public class Commit {
 		}else {
 			buffer.newLine();
 		}
+		if(child != null) {
+			buffer.write(child);
+			buffer.newLine();
+		}else {
+			buffer.newLine();
+		}
 		
 		//buffer.write(csha1);
-		buffer.newLine();
+		//buffer.newLine();
 		buffer.write(author);
 		buffer.newLine();
 		buffer.write(date);
@@ -169,33 +209,7 @@ public class Commit {
 		buffer.close();
 		files.close();
 	}
-	/*
-	private ArrayList<String> con() {
-		
-		ArrayList<String> Strs = new ArrayList<String>();
-		
-		Strs.add(pTree);
-		
-		//read file 
-		
-		
-		if (parent != null) {
-			Strs.add(parent.getPTree());
-		} else {
-			Strs.add(null);
-		}
-		if (first != null) {
-			Strs.add(parent.getPTree());
-		} else {
-			Strs.add(null);
-		}
-		Strs.add(author);
-		Strs.add(date);
-		Strs.add(summary);
-		return Strs;
-	}
-	*/	
-		
+	*/
 	public String getPTree() {
 		return pTree;
 	} 

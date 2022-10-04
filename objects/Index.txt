@@ -1,3 +1,0 @@
-junit.txt : 6cc0c54a8e819ecae1e0f18f63d8ea8b7c64f495
-junit2.txt : 1e6fd1f9aee172a79d8535bf22f3300f752e2a9a
-junit1.txt : 98fceafd953b39487d3c523e2f002fc8bfed2818

@@ -30,6 +30,7 @@ public class Index {
 		File f = new File (p+"/index.txt");
 		fi =f;
 		f.createNewFile();
+		
 		//File d = new File("test/objects"); 
 		//d.mkdir(); 
 		
