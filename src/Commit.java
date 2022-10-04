@@ -2,6 +2,7 @@
 
 
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -57,6 +58,20 @@ public class Commit {
 	
 		//sha1 = encrypt(st);
 		
+	}
+	public static ArrayList<String> getBlobs() throws FileNotFoundException, IOException{
+		String l = ""; 
+		ArrayList<String> blobsNames = new ArrayList<String>(); 
+		BufferedReader in = new BufferedReader(new FileReader("index.txt"));
+		
+		while(l !=null && in.ready()){
+			l = in.readLine();
+			if(l ==null)
+				break;
+			blobsNames.add(l);
+		}
+		in.close();
+		return blobsNames;
 	}
 	public static String getFSha1() {
 		return fsha1; 
