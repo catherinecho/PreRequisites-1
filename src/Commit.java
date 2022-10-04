@@ -42,9 +42,10 @@ public class Commit {
 		
 		if (parent !=null) {
 			psha1 = "objects/" + encrypt(parent.getFSha1());
+			parent.createChild(this);
+			parent.writeFile();
 		}else
 			psha1 = null;
-		
 		TreeObject tree = new TreeObject(getBlobs());
 		fsha1 = encrypt(summary+"\n" + date + "\n" + author + "\n" + psha1);
 		clearOutIndex(); 
@@ -59,8 +60,12 @@ public class Commit {
 		}
 		*/
 		//fsha1 = encrypt(st);
+		
 		writeFile(); 
 		
+	}
+	public static void createChild(Commit c) {
+		child = c;
 	}
 	public static void clearOutIndex() throws FileNotFoundException {
 		PrintWriter out = new PrintWriter("objects/indext.txt");
