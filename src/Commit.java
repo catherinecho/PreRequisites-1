@@ -38,29 +38,15 @@ public class Commit {
 		summary = sum;
 		author = aut;
 		fsha1 = encrypt(summary + date  + author  + parent);
-		
-		
-		if (p !=null) {
-			pfile = new File("objects/" + p);
-			PrintWriter out = new PrintWriter(new FileWriter(pfile));
-			parent = p;
-			BufferedReader in = new BufferedReader(new FileReader(pfile));
-			String updated = ""; 
-			updated += in.readLine() + "\n"; 
-			updated += in.readLine() + "\n"; 
-			in.readLine(); 
-			updated += "objects/" + fsha1 + "\n"; 
-			out.append(updated);
-			updated = ""; 
-			parT = in.readLine(); 
-			updated += parT + "\n"; 
-			updated += in.readLine() + "\n"; 
-			updated += in.readLine() + "\n";
-			out.append(updated);
-			out.close();
-			in.close();
+		parent = p;
+		if(p !=null) {
+			setChild(parent, fsha1);
 		}
-		
+		/*
+		if (p !=null) {
+			
+		}
+		*/
 		
 		TreeObject tree = new TreeObject(getBlobs());
 		pTree= tree.getSha1();
@@ -72,7 +58,26 @@ public class Commit {
 		
 		
 	}
-	
+	public static void setChild( String p, String c) throws IOException {
+		File parentF = new File("objects/" + p);
+		PrintWriter out = new PrintWriter(new FileWriter(parentF));
+		
+		BufferedReader in = new BufferedReader(new FileReader(parentF));
+		String updated = ""; 
+		updated += in.readLine() + "\n"; 
+		updated += in.readLine() + "\n"; 
+		in.readLine(); 
+		//updated += "objects/" + fsha1 + "\n"; 
+		out.append(updated);
+		updated = ""; 
+		c = in.readLine(); 
+		updated += c + "\n"; 
+		updated += in.readLine() + "\n"; 
+		updated += in.readLine() + "\n";
+		out.append(updated);
+		out.close();
+		in.close();
+	}
 	public static void clearOutIndex() throws FileNotFoundException {
 		PrintWriter out = new PrintWriter("objects/index.txt");
 		out.print("");
@@ -164,10 +169,10 @@ public class Commit {
 		File f = new File(fsha1);
 		PrintWriter p = new PrintWriter("objects/"+ f);
 		p.append("objects/" + pTree + "\n");
-		if (parent == null) p.append("null" + "\n");		
+		if (parent == null) p.append("\n");		
 		else p.append("objects/" + parent + "\n");
 			
-		if (child == null) p.append("null" + "\n");
+		if (child == null) p.append("\n");
 		else p.append("objects/" + child + "\n");
 			
 		p.append(author + "\n");
@@ -175,41 +180,7 @@ public class Commit {
 		p.append(summary + "\n");
 		p.close();
 	}
-	/*
-	public void writeFile() throws IOException, NoSuchAlgorithmException {
-		//ArrayList<String> a = con();
-		
-		//String SHA = encrypt(st);
-		File file = new File("objects/" + fsha1);
-
-		FileWriter files = new FileWriter(file);
-		BufferedWriter buffer = new BufferedWriter(files);
-		buffer.write("objects/" + pTree);
-		buffer.newLine();
-		if(parent != null) {
-			buffer.write(parent);
-			buffer.newLine();
-		}else {
-			buffer.newLine();
-		}
-		if(child != null) {
-			buffer.write(child);
-			buffer.newLine();
-		}else {
-			buffer.newLine();
-		}
-		
-		//buffer.write(csha1);
-		//buffer.newLine();
-		buffer.write(author);
-		buffer.newLine();
-		buffer.write(date);
-		buffer.newLine();
-		buffer.write(summary);
-		buffer.close();
-		files.close();
-	}
-	*/
+	
 	public String getPTree() {
 		return pTree;
 	} 
