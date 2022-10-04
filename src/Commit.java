@@ -59,6 +59,7 @@ public class Commit {
 		}
 		*/
 		//fsha1 = encrypt(st);
+		writeFile(); 
 		
 	}
 	public static void clearOutIndex() throws FileNotFoundException {
@@ -108,26 +109,7 @@ public class Commit {
 	public String getpTree() {
 		return pTree; 
 	}
-	/*
-	private ArrayList<String> contents() {
-		ArrayList<String> a = new ArrayList<String>();
-		a.add(pTree);
-		if (parent == null) 
-			a.add(null);
-		else 
-			a.add(parent.getpTree());
 	
-		if (child == null) {
-			a.add(null);	
-		} else {
-			a.add(parent.getLocation());
-		}
-		a.add(author);
-		a.add(date);
-		a.add(summary);
-		return a;
-	}
-	*/
 	public void writeP() throws NoSuchAlgorithmException, IOException {
 		parent.setFirst(this);
 		parent.writeFile();
@@ -141,19 +123,24 @@ public class Commit {
 	}
 			
 	public void writeFile() throws IOException, NoSuchAlgorithmException {
-		ArrayList<String> a = con();
+		//ArrayList<String> a = con();
 		
 		//String SHA = encrypt(st);
-		File file = new File(sha1);
+		//File file = new File(sha1);
 
-		FileWriter files = new FileWriter("objects/" + file);
+		FileWriter files = new FileWriter("objects/" + fsha1);
 		BufferedWriter buffer = new BufferedWriter(files);
-		for (String s : a) {
-			if (!s.equals(null)) {
-				buffer.write(s);
-			}
-			buffer.newLine();
-		}
+		buffer.write(pTree);
+		buffer.newLine();
+		buffer.write(psha1);
+		buffer.newLine();
+		buffer.write(csha1);
+		buffer.newLine();
+		buffer.write(author);
+		buffer.newLine();
+		buffer.write(date);
+		buffer.newLine();
+		buffer.write(summary);
 		buffer.close();
 		files.close();
 	}
