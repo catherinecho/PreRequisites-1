@@ -39,10 +39,11 @@ public class Commit {
 		author = aut;
 		fsha1 = encrypt(summary + date  + author  + parent);
 		parent = p;
+		/*
 		if(p !=null) {
 			setChild(parent, fsha1);
 		}
-		/*
+		
 		if (p !=null) {
 			
 		}
@@ -58,15 +59,13 @@ public class Commit {
 		
 		
 	}
+	/*
 	public static void setChild( String p, String c) throws IOException {
 		File parentF = new File("objects/" + p);
 		PrintWriter out = new PrintWriter(new FileWriter(parentF));
 		
 		BufferedReader in = new BufferedReader(new FileReader(parentF));
-		String updated = ""; 
-		updated += in.readLine() + "\n"; 
-		updated += in.readLine() + "\n"; 
-		in.readLine(); 
+		
 		//updated += "objects/" + fsha1 + "\n"; 
 		out.append(updated);
 		updated = ""; 
@@ -77,6 +76,23 @@ public class Commit {
 		out.append(updated);
 		out.close();
 		in.close();
+	}
+	*/
+	public void setChild(Commit c) throws IOException {
+		
+		BufferedReader in = new BufferedReader(new FileReader(new File("objects/" + parent)));
+		child = c.getFSha1();
+		String updated = ""; 
+		updated += in.readLine() + "\n"; 
+		updated += in.readLine() + "\n"; 
+		in.readLine(); 
+		String updated2 = "";
+		updated2+= in.readLine() + "\n"; 
+		updated2+= in.readLine() + "\n"; 
+		updated2 += in.readLine() + "\n"; 
+		PrintWriter pw = new PrintWriter(new FileWriter("objects/" + parent));
+		pw.append(updated + "objects/" + child + "\n" + updated2);
+		pw.close();
 	}
 	public static void clearOutIndex() throws FileNotFoundException {
 		PrintWriter out = new PrintWriter("objects/index.txt");

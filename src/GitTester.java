@@ -10,7 +10,7 @@ import java.security.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 
-class Gitblober {
+class GitTester {
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
@@ -81,6 +81,7 @@ class Gitblober {
 		
 		Commit second = new Commit("second commit", "Matthew Chang", first.getFSha1());
 		//first.setChild(first.getCommitName(), second.getCommitName());
+		first.setChild(second);
 		/*
 		i.addBlob("blob4.txt");
 		i.addBlob("blob5.txt");
