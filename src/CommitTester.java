@@ -26,6 +26,8 @@ class CommitTester {
 		//assertTrue(f.exists());
 		Commit c = new Commit("sum1","auth1", null);	
 //		Commit child = new Commit("tree1.txt","sum2","auth2",null);
+		Commit child = new Commit("sum2","auth2" ,c.getFSha1());
+		Commit child2 = new Commit("sum3","auth2",child.getFSha1());
 	}
 
 }

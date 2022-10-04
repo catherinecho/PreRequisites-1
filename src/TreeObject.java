@@ -15,9 +15,9 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class TreeObject {
-	ArrayList<String> arr= new ArrayList<String>();
-	String arrayContents="";
-	String sha1="";
+	private ArrayList<String> arr= new ArrayList<String>();
+	private String arrayContents="";
+	private String sha1="";
 	
 	public TreeObject(ArrayList<String> a) throws IOException, NoSuchAlgorithmException{
 		arr=a;
@@ -29,12 +29,15 @@ public class TreeObject {
 	         }
 	      }	
 	
-	//getting sha1
-	sha1=generateSHA1(arrayContents);
+	      //getting sha1
+	      sha1=generateSHA1(arrayContents);
 	
-	//creates file and adds array to new file
-	add(arr);
+	      //creates file and adds array to new file
+		add(arr);
 	
+	}
+	public String getSha1() {
+		return sha1;
 	}
 	
 	public static void main (String[]args) throws IOException, NoSuchAlgorithmException {

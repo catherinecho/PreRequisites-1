@@ -59,6 +59,8 @@ public class Commit {
 			out.close();
 			in.close();
 		}
+		
+		
 		TreeObject tree = new TreeObject(getBlobs());
 		pTree= tree.getSha1();
 		writeFile(); 
@@ -77,13 +79,19 @@ public class Commit {
 	}
 	public static ArrayList<String> getBlobs() throws FileNotFoundException, IOException{
 		String l = ""; 
+		boolean check = false;
 		ArrayList<String> blobsNames = new ArrayList<String>(); 
+		ArrayList<String> de = new ArrayList<String>(); 
 		BufferedReader in = new BufferedReader(new FileReader("index.txt"));
 		
 		while(l !=null && in.ready()){
+			
 			l = in.readLine();
 			if(l ==null)
 				break;
+			if(l.contains("*deleted*")) {
+				
+			}
 			blobsNames.add(l);
 		}
 		//blobsNames.add("tree :" + parent.getPTree());
@@ -91,19 +99,11 @@ public class Commit {
 		
 		return blobsNames;
 	}
-	public static String getFSha1() {
+	public String getFSha1() {
 		return fsha1; 
 	}
 	
-	public static String getContents(String filename) throws FileNotFoundException, NoSuchAlgorithmException, UnsupportedEncodingException {
-		Scanner in = new Scanner(new FileReader(filename));
-		String s= "";
-		while(in.hasNextLine()) {
-			s+= in.nextLine();
-		}
-		return s;
-		
-	}
+	
 	public static String encrypt(String input) throws NoSuchAlgorithmException, UnsupportedEncodingException {
 
         
@@ -114,9 +114,6 @@ public class Commit {
         return new BigInteger (1, md.digest()).toString(16);
 	}
 	
-	public String getpTree() {
-		return pTree; 
-	}
 	/*
 	public void writeP() throws NoSuchAlgorithmException, IOException {
 		parent.setFirst(this);
