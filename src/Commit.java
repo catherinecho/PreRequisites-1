@@ -19,9 +19,8 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class Commit {
-	static Commit first = null;
-	static Commit parent = null;
-	static Commit child  = null;
+	static String parent = null;
+	static String child  = null;
 	static String summary;
 	static String author;
 	static String date;
@@ -31,23 +30,38 @@ public class Commit {
 	String pTree = null;
 	
 	
-	public Commit (String sum, String aut, Commit p) throws NoSuchAlgorithmException, IOException {
+	public Commit (String sum, String aut, String p) throws NoSuchAlgorithmException, IOException {
 		
 		Date d=  new Date ();
 		date= d.toString();
-		parent = p;
+		File pfile = null; 
 		child = null;
 		summary = sum;
 		author = aut;
+		fsha1 = encrypt(summary + date  + author  + parent);
 		
-		if (parent !=null) {
-			psha1 = "objects/" + encrypt(parent.getFSha1());
-			parent.createChild(this);
-			parent.writeFile();
+		if (p !=null) {
+			pfile = new File("objects/" + p);
+			PrintWriter out = new PrintWriter(new FileWriter(pfile));
+			parent = p;
+			BufferedReader in = new BufferedReader(new FileReader(pfile));
+			String updated = ""; 
+			updated += in.readLine() + "\n"; 
+			updated += in.readLine() + "\n"; 
+			in.readLine(); 
+			updated += "objects/" + fsha1 + "\n"; 
+			out.append(updated);
+			updated = ""; 
+			updated += in.readLine() + "\n"; 
+			updated += in.readLine() + "\n"; 
+			updated += in.readLine() + "\n";
+			out.append(updated);
+			out.close();
+			in.close();
 		}else
 			psha1 = null;
 		TreeObject tree = new TreeObject(getBlobs());
-		fsha1 = encrypt(summary+"\n" + date + "\n" + author + "\n" + psha1);
+		
 		clearOutIndex(); 
 		/*
 		String st = "";
@@ -63,10 +77,9 @@ public class Commit {
 		
 		writeFile(); 
 		
+		
 	}
-	public static void createChild(Commit c) {
-		child = c;
-	}
+	
 	public static void clearOutIndex() throws FileNotFoundException {
 		PrintWriter out = new PrintWriter("objects/indext.txt");
 		out.print("");
@@ -83,7 +96,7 @@ public class Commit {
 				break;
 			blobsNames.add(l);
 		}
-		blobsNames.add("tree :" + parent.getPTree());
+		//blobsNames.add("tree :" + parent.getPTree());
 		in.close();
 		
 		return blobsNames;
@@ -114,18 +127,13 @@ public class Commit {
 	public String getpTree() {
 		return pTree; 
 	}
-	
+	/*
 	public void writeP() throws NoSuchAlgorithmException, IOException {
 		parent.setFirst(this);
 		parent.writeFile();
 	}
+	*/
 	
-	public void setFirst (Commit c) {
-		first = c;
-	}
-	public void setParent (Commit c) {
-			parent = c;
-	}
 			
 	public void writeFile() throws IOException, NoSuchAlgorithmException {
 		//ArrayList<String> a = con();
@@ -149,6 +157,7 @@ public class Commit {
 		buffer.close();
 		files.close();
 	}
+	/*
 	private ArrayList<String> con() {
 		
 		ArrayList<String> Strs = new ArrayList<String>();
@@ -173,7 +182,7 @@ public class Commit {
 		Strs.add(summary);
 		return Strs;
 	}
-		
+	*/	
 		
 	public String getPTree() {
 		return pTree;

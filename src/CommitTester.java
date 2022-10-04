@@ -24,7 +24,7 @@ class CommitTester {
 		File f = new File("objects/tree.txt"); 
 		// make tree.txt and put some content in it
 		//assertTrue(f.exists());
-		Commit c = new Commit("sum1","auth1","tree.txt", null);	
+		Commit c = new Commit("sum1","auth1", null);	
 //		Commit child = new Commit("tree1.txt","sum2","auth2",null);
 	}
 
